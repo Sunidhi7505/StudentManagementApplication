@@ -12,6 +12,7 @@ public class Student {
     private String name;
     private String email;
     private int marks;
+    private boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -43,5 +44,13 @@ public class Student {
 
     public void setMarks(int marks) {
         this.marks = marks;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
