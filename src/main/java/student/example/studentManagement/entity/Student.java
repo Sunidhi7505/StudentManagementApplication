@@ -1,6 +1,7 @@
 package student.example.studentManagement.entity;
 
 import jakarta.persistence.*;
+//addded comment
 
 @Entity
 @Table(name="StudentInfo")

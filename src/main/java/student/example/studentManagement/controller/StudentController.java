@@ -78,6 +78,14 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(studentRes);
+    }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> softDeleteById(@PathVariable Long id){
+        boolean isDeleted = studentService.softDelete(id);
+        if(isDeleted){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
