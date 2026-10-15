@@ -13,7 +13,7 @@ public class RequestDto {
     private String email;
 
     @Min(value = 0 , message="marks must be greater than 30")
-    @Max(value = 100 , message = "marks can't be greater than 100")
+    @Max(value = 100 , message = "marks can't be greater than 150")
     private int marks;
 
     public String getName() {
