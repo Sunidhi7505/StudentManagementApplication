@@ -65,13 +65,15 @@ public class StudentService {
     }
 
     //find by id
-    public Student findById(Long id){
+    public ResponseDto findById(Long id){
         //select * from student where id=1 and isdelted=false;
         Optional<Student> studentRes = repository.findByIdAndIsDeletedFalse(id);
         if(studentRes.isEmpty()){
             return null;
         }
-        return studentRes.get();
+        ResponseDto response = entityToDto(studentRes.get());
+        response.setCreateAt(LocalDateTime.now());
+        return response;
     }
 
     //find by marks
@@ -106,9 +108,9 @@ public class StudentService {
         return repository.save(studentToSave);
     }
 
-    public boolean softDelete(Long id){
+    public boolean softDelete(Long id) {
         Optional<Student> existingStudent = repository.findByIdAndIsDeletedFalse(id);
-        if(existingStudent.isEmpty()){
+        if (existingStudent.isEmpty()) {
             return false;
         }
         Student studentToSave = existingStudent.get();
@@ -116,7 +118,4 @@ public class StudentService {
         repository.save(studentToSave);
         return true;
     }
-
-
-
 }
