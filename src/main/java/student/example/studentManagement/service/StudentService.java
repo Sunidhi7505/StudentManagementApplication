@@ -77,9 +77,18 @@ public class StudentService {
     }
 
     //find by marks
-    public List<Student> findByMarks(int marks){
+    public List<ResponseDto> findByMarks(int marks){
         //select* from student where marks = 80 and isdeleted = false;
-         return repository.findByMarksAndIsDeletedFalse(marks);
+        List<Student> student = repository.findByMarksAndIsDeletedFalse(marks);
+
+        List<ResponseDto> ans = new ArrayList<>();
+        for(int i=0 ; i<student.size() ; i++){
+            Student data = student.get(i);
+            ResponseDto studentRes = entityToDto(data);
+            studentRes.setCreateAt(LocalDateTime.now());
+            ans.add(studentRes);
+        }
+        return ans;
     }
 
     //deleteById
@@ -92,7 +101,7 @@ public class StudentService {
          return false;
     }
 
-    public Student updateById(Long id , Student student){
+    public ResponseDto updateById(Long id , RequestDto studentReq){
         //select * from student where id = 1 and isdleted = false;
 
         Optional<Student> existingStudent = repository.findByIdAndIsDeletedFalse(id);
@@ -101,11 +110,14 @@ public class StudentService {
         }
         Student studentToSave = existingStudent.get();
 
-        studentToSave.setName(student.getName());
-        studentToSave.setEmail(student.getEmail());
-        studentToSave.setMarks(student.getMarks());
+        studentToSave.setName(studentReq.getName());
+        studentToSave.setEmail(studentReq.getEmail());
+        studentToSave.setMarks(studentReq.getMarks());
 
-        return repository.save(studentToSave);
+        Student updatedStudent = repository.save(studentToSave);
+        ResponseDto studentRes = entityToDto(updatedStudent);
+        studentRes.setCreateAt(LocalDateTime.now());
+        return studentRes;
     }
 
     public boolean softDelete(Long id) {
