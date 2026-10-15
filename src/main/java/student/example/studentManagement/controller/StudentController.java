@@ -3,6 +3,8 @@ package student.example.studentManagement.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import student.example.studentManagement.dto.RequestDto;
+import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.entity.Student;
 import student.example.studentManagement.service.StudentService;
 
@@ -18,8 +20,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student studentRes = studentService.createStudent(student);
+    public ResponseEntity<ResponseDto> createStudent(@RequestBody RequestDto studentReq){
+        ResponseDto studentRes = studentService.createStudent(studentReq);
 
         return ResponseEntity.status(201).body(studentRes);
     }

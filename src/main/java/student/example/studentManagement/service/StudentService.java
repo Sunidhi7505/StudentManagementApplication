@@ -1,9 +1,12 @@
 package student.example.studentManagement.service;
 
 import org.springframework.stereotype.Service;
+import student.example.studentManagement.dto.RequestDto;
+import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.entity.Student;
 import student.example.studentManagement.repository.StudentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +17,35 @@ public class StudentService {
         this.repository = repository;
     }
 
+    //convert dto to entity
+    private Student dtoToEntity(RequestDto studentReq){
+        Student student = new Student();
+        student.setName(studentReq.getName());
+        student.setEmail(studentReq.getEmail());
+        student.setMarks(studentReq.getMarks());
+
+        return student;
+    }
+
+    //convert entity to dto
+    private ResponseDto entityToDto(Student student){
+        ResponseDto studentRes = new ResponseDto();
+        studentRes.setName(student.getName());
+        studentRes.setEmail(student.getEmail());
+        studentRes.setMarks(student.getMarks());
+
+        return studentRes;
+    }
+
     //create
-    public Student createStudent(Student student){
+    public ResponseDto createStudent(RequestDto studentReq){
+        Student student = dtoToEntity(studentReq);
         student.setDeleted(false);
-       return repository.save(student);
+        repository.save(student);
+
+        ResponseDto studentRes = entityToDto(student);
+        studentRes.setCreateAt(LocalDateTime.now());
+        return studentRes;
     }
 
     //findAll
@@ -78,5 +106,7 @@ public class StudentService {
         repository.save(studentToSave);
         return true;
     }
+
+
 
 }
