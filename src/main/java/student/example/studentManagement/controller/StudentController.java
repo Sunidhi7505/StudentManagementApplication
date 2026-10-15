@@ -1,5 +1,6 @@
 package student.example.studentManagement.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createStudent(@RequestBody RequestDto studentReq){
+    public ResponseEntity<ResponseDto> createStudent(@Valid @RequestBody RequestDto studentReq){
         ResponseDto studentRes = studentService.createStudent(studentReq);
 
         return ResponseEntity.status(201).body(studentRes);
@@ -73,7 +74,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateById(@PathVariable Long id , @RequestBody RequestDto studentReq){
+    public ResponseEntity<ResponseDto> updateById(@PathVariable Long id , @Valid @RequestBody RequestDto studentReq){
         ResponseDto studentRes = studentService.updateById(id , studentReq);
 
         if(studentRes == null){
