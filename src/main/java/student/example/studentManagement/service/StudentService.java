@@ -7,6 +7,7 @@ import student.example.studentManagement.entity.Student;
 import student.example.studentManagement.repository.StudentRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,9 +50,18 @@ public class StudentService {
     }
 
     //findAll
-    public List<Student> getAll(){
+    public List<ResponseDto> getAll(){
         //select * from student where isdelted=false;
-        return repository.findByIsDeletedFalse();
+        List<Student> student = repository.findByIsDeletedFalse();
+        List<ResponseDto> ans = new ArrayList<>();
+
+        for(int i=0 ; i<student.size() ; i++){
+               Student data = student.get(i);
+               ResponseDto studentRes = entityToDto(data);
+               studentRes.setCreateAt(LocalDateTime.now());
+               ans.add(studentRes);
+        }
+        return ans;
     }
 
     //find by id

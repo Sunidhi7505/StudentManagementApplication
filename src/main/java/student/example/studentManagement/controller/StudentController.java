@@ -27,8 +27,8 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAll(){
-        List<Student> studentRes = studentService.getAll();
+    public ResponseEntity<List<ResponseDto>> getAll(){
+        List<ResponseDto> studentRes = studentService.getAll();
         if(studentRes.isEmpty()){
             return ResponseEntity.status(404).build();
         }
