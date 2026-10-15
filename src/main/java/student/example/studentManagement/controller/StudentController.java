@@ -3,6 +3,8 @@ package student.example.studentManagement.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import student.example.studentManagement.dto.RequestDto;
+import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.entity.Student;
 import student.example.studentManagement.service.StudentService;
 
@@ -18,15 +20,15 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student studentRes = studentService.createStudent(student);
+    public ResponseEntity<ResponseDto> createStudent(@RequestBody RequestDto studentReq){
+        ResponseDto studentRes = studentService.createStudent(studentReq);
 
         return ResponseEntity.status(201).body(studentRes);
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAll(){
-        List<Student> studentRes = studentService.getAll();
+    public ResponseEntity<List<ResponseDto>> getAll(){
+        List<ResponseDto> studentRes = studentService.getAll();
         if(studentRes.isEmpty()){
             return ResponseEntity.status(404).build();
         }
@@ -34,8 +36,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> findById(@PathVariable Long id){
-       Student studentRes  = studentService.findById(id);
+    public ResponseEntity<ResponseDto> findById(@PathVariable Long id){
+        ResponseDto studentRes  = studentService.findById(id);
        if(studentRes == null){
            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
        }
@@ -43,8 +45,8 @@ public class StudentController {
     }
 
     @GetMapping("/marks")
-    public ResponseEntity<List<Student>> findByMarks(@RequestParam int marks){
-        List<Student> studentRes = studentService.findByMarks(marks);
+    public ResponseEntity<List<ResponseDto>> findByMarks(@RequestParam int marks){
+        List<ResponseDto> studentRes = studentService.findByMarks(marks);
         if(studentRes.isEmpty()){
             return ResponseEntity.status(404).build();
         }
@@ -71,8 +73,8 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateById(@PathVariable Long id , @RequestBody Student student){
-        Student studentRes = studentService.updateById(id , student);
+    public ResponseEntity<ResponseDto> updateById(@PathVariable Long id , @RequestBody RequestDto studentReq){
+        ResponseDto studentRes = studentService.updateById(id , studentReq);
 
         if(studentRes == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
