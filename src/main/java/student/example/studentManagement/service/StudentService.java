@@ -70,6 +70,7 @@ public class StudentService {
         //select * from student where id=1 and isdelted=false;
         Student studentRes = repository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(()->new ResourceNotFoundException("This id does not exist"));
+
         ResponseDto response = entityToDto(studentRes);
         response.setCreateAt(LocalDateTime.now());
         return response;

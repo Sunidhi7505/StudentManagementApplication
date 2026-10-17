@@ -1,11 +1,15 @@
 package student.example.studentManagement.exception;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import student.example.studentManagement.dto.ExceptionResponseDto;
 import student.example.studentManagement.dto.ResponseDto;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -14,8 +18,16 @@ public class GlobalExceptionHandler {
     //This ResourceNotFoundException is my own custom Exception , this is not provided by java that's why i have created
     // ResourceNotFoundException class
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    public ResponseEntity<ExceptionResponseDto> handleResourceNotFoundException(ResourceNotFoundException e , HttpServletRequest request){
+        ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(
+                LocalDateTime.now() ,
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                request.getRequestURI(),
+                e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponseDto);
     }
 
     @ExceptionHandler(NullPointerException.class)
