@@ -67,11 +67,8 @@ public class StudentService {
     //find by id
     public ResponseDto findById(Long id){
         //select * from student where id=1 and isdelted=false;
-        Optional<Student> studentRes = repository.findByIdAndIsDeletedFalse(id);
-        if(studentRes.isEmpty()){
-            return null;
-        }
-        ResponseDto response = entityToDto(studentRes.get());
+        Student studentRes = repository.findByIdAndIsDeletedFalse(id).orElse(null);
+        ResponseDto response = entityToDto(studentRes);
         response.setCreateAt(LocalDateTime.now());
         return response;
     }

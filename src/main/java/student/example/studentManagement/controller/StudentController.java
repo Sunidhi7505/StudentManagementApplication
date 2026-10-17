@@ -39,9 +39,6 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto> findById(@PathVariable Long id){
         ResponseDto studentRes  = studentService.findById(id);
-       if(studentRes == null){
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-       }
        return ResponseEntity.ok(studentRes);
     }
 
