@@ -12,7 +12,7 @@ public class RequestDto {
     @Email(message = "email must be in valid format")
     private String email;
 
-    @Min(value = 0 , message="marks must be greater than 30")
+    @Min(value = 40 , message="marks must be greater than 40")
     @Max(value = 100 , message = "marks can't be greater than 100")
     private int marks;
 
