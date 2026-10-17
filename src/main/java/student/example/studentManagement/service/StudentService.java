@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import student.example.studentManagement.dto.RequestDto;
 import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.entity.Student;
+import student.example.studentManagement.exception.ResourceNotFoundException;
 import student.example.studentManagement.repository.StudentRepository;
 
 import java.time.LocalDateTime;
@@ -67,7 +68,8 @@ public class StudentService {
     //find by id
     public ResponseDto findById(Long id){
         //select * from student where id=1 and isdelted=false;
-        Student studentRes = repository.findByIdAndIsDeletedFalse(id).orElse(null);
+        Student studentRes = repository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(()->new ResourceNotFoundException("This id does not exist"));
         ResponseDto response = entityToDto(studentRes);
         response.setCreateAt(LocalDateTime.now());
         return response;
