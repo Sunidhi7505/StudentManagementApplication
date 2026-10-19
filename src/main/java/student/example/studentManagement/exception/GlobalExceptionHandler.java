@@ -4,16 +4,35 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import student.example.studentManagement.dto.ExceptionResponseDto;
 import student.example.studentManagement.dto.ResponseDto;
+import student.example.studentManagement.dto.ValidationExceptionResponseDto;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationExceptionResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e , HttpServletRequest request){
+        Map<String,String> fieldErrors = new HashMap<>();
+        e.getBindingResult().getFieldErrors().forEach(error->fieldErrors.put(error.getField() , error.getDefaultMessage()));
+        ValidationExceptionResponseDto exceptionResponseDto = new ValidationExceptionResponseDto(
+                LocalDateTime.now() ,
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                request.getRequestURI(),
+                "Invalid Request",
+                fieldErrors
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponseDto);
+    }
 
     @ExceptionHandler(ResourceAlreadyExistException.class)
     public ResponseEntity<ExceptionResponseDto> handleResourceAlreadyExistException(ResourceAlreadyExistException e , HttpServletRequest request){
