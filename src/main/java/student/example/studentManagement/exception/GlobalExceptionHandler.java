@@ -15,6 +15,18 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public ResponseEntity<ExceptionResponseDto> handleResourceAlreadyExistException(ResourceAlreadyExistException e , HttpServletRequest request){
+        ExceptionResponseDto exceptionResponseDto = new ExceptionResponseDto(
+                LocalDateTime.now() ,
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                request.getRequestURI(),
+                e.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionResponseDto);
+    }
+
     //This ResourceNotFoundException is my own custom Exception , this is not provided by java that's why i have created
     // ResourceNotFoundException class
     @ExceptionHandler(ResourceNotFoundException.class)

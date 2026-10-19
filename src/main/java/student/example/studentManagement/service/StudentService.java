@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import student.example.studentManagement.dto.RequestDto;
 import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.entity.Student;
+import student.example.studentManagement.exception.ResourceAlreadyExistException;
 import student.example.studentManagement.exception.ResourceNotFoundException;
 import student.example.studentManagement.repository.StudentRepository;
 
@@ -41,6 +42,13 @@ public class StudentService {
 
     //create
     public ResponseDto createStudent(RequestDto studentReq){
+
+        if(repository.existsByEmail(studentReq.getEmail())) {
+            throw new ResourceAlreadyExistException(
+                    "Student already exists with email: " + studentReq.getEmail()
+            );
+        }
+
         Student student = dtoToEntity(studentReq);
         student.setDeleted(false);
         repository.save(student);
