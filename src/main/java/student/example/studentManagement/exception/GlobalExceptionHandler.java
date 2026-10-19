@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,17 +13,15 @@ import student.example.studentManagement.dto.ResponseDto;
 import student.example.studentManagement.dto.ValidationExceptionResponseDto;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationExceptionResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e , HttpServletRequest request){
-        Map<String,String> fieldErrors = new HashMap<>();
-        e.getBindingResult().getFieldErrors().forEach(error->fieldErrors.put(error.getField() , error.getDefaultMessage()));
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+
         ValidationExceptionResponseDto exceptionResponseDto = new ValidationExceptionResponseDto(
                 LocalDateTime.now() ,
                 HttpStatus.BAD_REQUEST.value(),

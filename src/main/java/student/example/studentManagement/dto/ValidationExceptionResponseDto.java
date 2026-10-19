@@ -1,6 +1,9 @@
 package student.example.studentManagement.dto;
 
+import org.springframework.validation.FieldError;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public class ValidationExceptionResponseDto {
@@ -9,9 +12,10 @@ public class ValidationExceptionResponseDto {
     private String error;
     private String path;
     private String message;
-    private Map<String , String> fieldErrors;
+    private List<FieldError> fieldErrors;
 
-    public ValidationExceptionResponseDto(LocalDateTime timestamp, Integer status, String error, String path, String message, Map<String, String> fieldErrors) {
+
+    public ValidationExceptionResponseDto(LocalDateTime timestamp, Integer status, String error, String path, String message, List<FieldError> fieldErrors) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
@@ -60,11 +64,11 @@ public class ValidationExceptionResponseDto {
         this.message = message;
     }
 
-    public Map<String, String> getFieldErrors() {
+    public List<FieldError> getFieldErrors() {
         return fieldErrors;
     }
 
-    public void setFieldErrors(Map<String, String> fieldErrors) {
+    public void setFieldErrors(List<FieldError> fieldErrors) {
         this.fieldErrors = fieldErrors;
     }
 }
